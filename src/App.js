@@ -4,7 +4,7 @@ function App() {
     const [counter, setCounter] = useState(0);
     const [boxArray, setBoxArray] = useState([]);
     const [boxColor, setBoxColor] = useState('blue');
-    const colorArray = ['blue', 'purple', 'green', 'red'];
+    const [update, setUpdate] = useState(false);
 
     const boxStyle = {
         width: '50px',
@@ -19,29 +19,36 @@ function App() {
 
     function addCounter() {
         setCounter(counter + 1);
+        setUpdate(true);
     }
 
     function resetCounter() {
         setCounter(0);
+        setUpdate(true);
     }
 
     useEffect(() => {
-        if (counter === 0) {
-            setBoxArray([]);
-        }
-        if (counter % 2 !== 0) {
-            let newEntry = [boxArray.length];
-            setBoxArray(boxArray.concat(newEntry));
-        }
-        if (counter % 5 === 0) {
-            let newColor = boxColor;
-            while (newColor === boxColor) {
-                let colorIndex = Math.floor(Math.random() * (4 - 0) + 0);
-                newColor = colorArray[colorIndex];
+        const colorArray = ['blue', 'purple', 'green', 'red'];
+
+        if (update) {
+            if (counter === 0) {
+                setBoxArray([]);
             }
-            setBoxColor(newColor);
+            if (counter % 2 !== 0) {
+                let newEntry = [boxArray.length];
+                setBoxArray(boxArray.concat(newEntry));
+            }
+            if (counter % 5 === 0) {
+                let newColor = boxColor;
+                while (newColor === boxColor) {
+                    let colorIndex = Math.floor(Math.random() * (4 - 0) + 0);
+                    newColor = colorArray[colorIndex];
+                }
+                setBoxColor(newColor);
+            }
+            setUpdate(false);
         }
-    }, [counter])
+    }, [counter, boxArray, boxColor, update])
 
   return (
     <div>
